@@ -1,0 +1,46 @@
+					PID Controller Project Writeup
+					-------------------------------
+
+
+Compilation Steps:
+------------------
+1) In the VirtualBox Ubuntu environment, type the following command: cd CarND-PID-Control-Project-master.  
+   This command will go to the project directory.
+2) Run the Ubuntu script with the follwoing command: ./install-ubuntu.sh.  This command will do the compilation
+   with cmake and make, and also install uWebsocket, which will be used to communicate between the c++ source code 
+   with the Linux car simulator.
+
+Implementation Steps:
+---------------------
+1)  In the build directory of CarND-PID-Control-Project-master/build, type the following command:  make.
+    This command will compile the updated source code in C++.
+2)  Then type the following command:  ./pid.  It will run the source code with uWebsocket.
+3)  Open up the Linux car simulator, click the Autonomous button in the car simulator window.  The car simulator
+    will link up with the C++ source code via uWebsocket.  Then the car in the simulator will drive around the track
+    autonomously.
+
+Reflection:
+-----------
+1)  The proportional coefficient(Kp) produces an output value, proportional to the cross track error(cte) of the car.
+    If the adjustment of Kp is too high, the car will oscillate at a wide angle, causing the car to overshoot.  If the 
+    adjustment of Kp is too small, the car will adjust to a high cte with a too small correction, and won't be able to
+    correct the cte correctly.  It is better to adjust the Kp in medium value such as 1.0.
+2)  The integral coefficient(Ki) is proportional to the magnitude of the cte error.  It is the summation of the cte error
+    over time.  If the Ki is adjusted too big, the car will overshoot.  It is better to have a low Ki to minimize the 
+    overshoot of the car with a value such as 0.000001.
+3)  The derivative coefficient(Kd) predicts the future of the car's driving direction.  It is the slope of the error over time.
+    If adjust correctly, it provides stability to the car.  If adjust too big in value, the car will have a difficulty to adjust  
+    to a big change of error.  For example, choose a medium value such as 0.9 will maintain stability of the car.
+
+Final Hyper-parameters Selection:
+---------------------------------
+	In conclusion, after tweaking the three components (Kp, Ki, Kd), the proportional coeffients, Kp, is adjusted to 0.1,
+Ki is equaled to 0.000001, and Kd is adjusted to 0.9.  In addition, to adjust the speed, throttle is related to the speed of the
+car by this equation, RPM = throttle_max multiply by throttle_value, where throttle_value is between 0 and 1.  Between the absolute 
+value of 0 and 1, the steer error value is used to calculate the throttle_value, which is essential to the stability of the car.
+If the steer value error is below 0.001, the throttle_value is 0.7.  If the steer error value is smaller than 0.01 and bigger than
+0.001, the throttle_value is 0.5.  If the steer error value is below 1 and larger than 0.01, the throttle_value is 0.2.
+
+Simulation Conclusion:
+-----------------------
+The car drives smoothly at various speed for many laps in the simulator. 
